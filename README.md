@@ -12,19 +12,27 @@ including an external JavaScript file:
 ```
   
 And by calling `getScriptContext( new Error )` within our `example.js` file 
-that script itself will understand the following about its own context:
+that script itself will understand its own context like so:
 ```
 {
 	data: {
-
 		KEY1: "VALUE1",
 		KEY2: [
-
 			"VALUE2A",
 			"VALUE2B"
 		]
 	},
-	location: {...}
+	location: {
+		hash:     "#HASH",
+		host:     "0.0.0.0:8000",
+		hostname: "0.0.0.0",
+		href:     "http://0.0.0.0:8000/example.js?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B#HASH",
+		origin:   "http://0.0.0.0:8000",
+		pathname: "/example.js",
+		port:     "8000",
+		protocol: "http:",
+		search:   "?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B"
+	}
 }
 ```
   

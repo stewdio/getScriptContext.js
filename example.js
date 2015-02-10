@@ -16,7 +16,7 @@ document.addEventListener( 'DOMContentLoaded', function(){
 
 	//  And some console output for you:
 
-	console.log( 'Here’s our context{} object:')
+	console.log( 'Here’s our context{} object:' )
 	console.log( context )
 
 

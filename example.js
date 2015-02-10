@@ -7,10 +7,15 @@
 document.addEventListener( 'DOMContentLoaded', function(){
 
 
-	//  We’ll make “context” a global variable
-	//  so you can inspect it yourself from the console.
+	//  Here’s the magic line.
+	//  We’ll make “context” a global variable so you
+	//  can inspect it yourself from the console.
 
 	window.context = getScriptContext( new Error )
+	
+
+	//  And some console output for you:
+
 	console.log( 'Here’s our context{} object:')
 	console.log( context )
 

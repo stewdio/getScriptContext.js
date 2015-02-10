@@ -12,7 +12,7 @@
 function getScriptContext( err ){
 
 	var
-	lastErrorLine,  //  Last line of the browser’s error message.
+	errorMessage,   //  Copy of browser’s error message for legibility.
 	url,            //  URL of the JavaScript file that created the error.
 	locationParser, //  Magic location parsing ;)
 	search, pairs,  //  For parsing variables passed via the URL.
@@ -22,8 +22,8 @@ function getScriptContext( err ){
 	//  The error object is regular old human-readable text.
 	//  We’re going to have to pull it apart to get what we’re after.
 
-	lastErrorLine = err.stack.split( '\n' ).pop().trim()
-	url = lastErrorLine.substring( lastErrorLine.indexOf( '//' ), lastErrorLine.lastIndexOf( ':' ))
+	errorMessage = err.stack
+	url = errorMessage.substring( errorMessage.indexOf( '//' ), errorMessage.lastIndexOf( ':' ))
 	url = url.substring( 0, url.lastIndexOf( ':' ))
 
 
@@ -36,33 +36,39 @@ function getScriptContext( err ){
 	parser.href = url
 	context.location = {
 
-		href:     parser.href,      //  'http://example.com:8080/pathname/with/slashes/index.html#hash?search=kittens'
+		href:     parser.href,      //  'http://example.com:8080/pathname/with/slashes/index.html?search=kittens#hash'
 		origin:   parser.origin,    //  'http://'
 		protocol: parser.protocol,  //  'http:'
 		host:     parser.host,      //  'example.com:8080'
 		hostname: parser.hostname,  //  'example.com'
 		port:     parser.port,      //  '8080'
 		pathname: parser.pathname,  //  '/pathname/with/slashes/'
-		hash:     parser.hash,      //  '#hash'
-		search:   parser.search     //  '?search=kittens'
+		search:   parser.search,    //  '?search=kittens'
+		hash:     parser.hash       //  '#hash'
 	}
 
 
 	//  We’ve possibly placed arguments in the search string
 	//  which we need to extract and attach to our return object.
+	//  Right now we’re only worried about parser.search
+	//  and not parser.hash because Chrome seems to strip out
+	//  hashes from JavaScript includes. Why? Meh.
 
 	context.data = {}
-	search = parser.search
-	if( search.substr( 0, 1 ) === '?' ) search = search.substr( 1 )
-	search.replace( /\?/g, '&' )
-	pairs = search.split( '&' )
-	pairs.forEach( function( pair ){
+	if( parser.search ){
+	
+		search = parser.search
+		if( search.substr( 0, 1 ) === '?' ) search = search.substr( 1 )
+		search.replace( /\?/g, '&' )
+		pairs = search.split( '&' )
+		pairs.forEach( function( pair ){
 
-		pair = pair.split( '=' )
-		if( pair[ 1 ].indexOf( ',' ) > -1 )
-			context.data[ pair[ 0 ]] = pair[ 1 ].split( ',' )
-		else context.data[ pair[ 0 ]] = pair[ 1 ]
-	})
+			pair = pair.split( '=' )
+			if( pair[ 1 ].indexOf( ',' ) > -1 )
+				context.data[ pair[ 0 ]] = pair[ 1 ].split( ',' )
+			else context.data[ pair[ 0 ]] = pair[ 1 ]
+		})
+	}
 
 
 	//  Ok that’s it.

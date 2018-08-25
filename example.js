@@ -24,9 +24,11 @@ document.addEventListener( 'DOMContentLoaded', function(){
 	//  It’s kind of the medium of our times kiddo.
 
 	var el = document.createElement( 'div' )
-	el.innerHTML = '<strong>context.location.pathname:</strong><br>'+
-		context.location.pathname +'<br>'+
-		'<strong>context.location.search:</strong><br>'+
-		context.location.search
+	el.innerHTML = '<strong>context.location.pathname</strong><br>'+
+		context.location.pathname +'<br><br>'+
+		'<strong>context.location.search</strong><br>'+
+		context.location.search +'<br><br>'+
+		'<strong>context.location.line : context.location.column</strong><br>'+
+		context.location.line +' : '+ context.location.column
 	document.body.appendChild( el )
 })

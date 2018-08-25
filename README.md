@@ -5,6 +5,7 @@ Get Script Context.
 
 Have you ever wished your plain old JavaScript include could know its own 
 file’s URL or even accept variables passed to it through its URL? (OMG WHY?!)
+What about knowing the line and column number something was called from?
 Well you are in luck. Here’s an example of how we pass variables by simply 
 including an external JavaScript file:
 ```
@@ -32,6 +33,8 @@ that script itself will understand its own context like so:
 		port:     "8000",
 		protocol: "http:",
 		search:   "?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B"
+		line:     '14',
+		column:   '37'
 	}
 }
 ```

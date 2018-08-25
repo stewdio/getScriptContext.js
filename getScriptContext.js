@@ -14,6 +14,8 @@ function getScriptContext( err ){
 	var
 	errorMessage,   //  Copy of browser’s error message for legibility.
 	url,            //  URL of the JavaScript file that created the error.
+	stop, start,    //  Temporary convenience vars for finding line and column.
+	line, column,   //  Line number and column number of the error.
 	locationParser, //  Magic location parsing ;)
 	search, pairs,  //  For parsing variables passed via the URL.
 	context = {}    //  Package everything into a “context” object.
@@ -23,8 +25,12 @@ function getScriptContext( err ){
 	//  We’re going to have to pull it apart to get what we’re after.
 
 	errorMessage = err.stack
-	url = errorMessage.substring( errorMessage.indexOf( '//' ), errorMessage.lastIndexOf( ':' ))
-	url = url.substring( 0, url.lastIndexOf( ':' ))
+	url    = errorMessage.substring( errorMessage.indexOf( '//' ), errorMessage.lastIndexOf( ':' ))
+	url    = url.substring( 0, url.lastIndexOf( ':' ))
+	stop   = errorMessage.lastIndexOf( ':' )
+	start  = errorMessage.substring( 0, stop ).lastIndexOf( ':' )
+	column = errorMessage.substring( stop + 1, errorMessage.length - 1 )
+	line   = errorMessage.substring( start + 1, stop )
 
 
 	//  We need to extract the search params from 
@@ -44,7 +50,9 @@ function getScriptContext( err ){
 		port:     parser.port,      //  '8080'
 		pathname: parser.pathname,  //  '/pathname/with/slashes/'
 		search:   parser.search,    //  '?search=kittens'
-		hash:     parser.hash       //  '#hash'
+		hash:     parser.hash,      //  '#hash'
+		line:     line,             //  '14'
+		column:   column            //  '37'
 	}
 
 

@@ -15,27 +15,28 @@ including an external JavaScript file:
 And by calling `getScriptContext( new Error )` within our `example.js` file 
 that script itself will understand its own context like so:
 ```
-{
-	data: {
-		KEY1: "VALUE1",
-		KEY2: [
-			"VALUE2A",
-			"VALUE2B"
-		]
-	},
-	location: {
-		hash:     "#HASH",
-		host:     "0.0.0.0:8000",
-		hostname: "0.0.0.0",
-		href:     "http://0.0.0.0:8000/example.js?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B#HASH",
-		origin:   "http://0.0.0.0:8000",
-		pathname: "/example.js",
-		port:     "8000",
-		protocol: "http:",
-		search:   "?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B"
-		line:     '14',
-		column:   '37'
-	}
+data: {
+
+	KEY1: 'VALUE1',
+	KEY2: [
+
+		'VALUE2A',
+		'VALUE2B'
+	]
+},
+location: {
+
+	hash:     '#HASH',
+	host:     '0.0.0.0:8000',
+	hostname: '0.0.0.0',
+	href:     'http://0.0.0.0:8000/example.js?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B#HASH',
+	origin:   'http://0.0.0.0:8000',
+	pathname: '/example.js',
+	port:     '8000',
+	protocol: 'http:',
+	search:   '?KEY1=VALUE1&KEY2=VALUE2A,VALUE2B'
+	line:     '14',
+	column:   '37'
 }
 ```
   
@@ -44,4 +45,6 @@ but in Safari and Firefox you can access that as well.
   
 
 **Note that we are not talking about the HTML file’s URL here. This gets at 
-an included script’s own URL. I’ve never seen this done before.**
+an included script’s own URL. I’ve never seen this done before.** 
+(I originally created this hack in 2013 as part of my 
+[Jem](https://github.com/stewdio/jem) experiment. It’s truly outrageous.)
